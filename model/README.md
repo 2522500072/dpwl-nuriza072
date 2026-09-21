@@ -1,0 +1,1 @@
+# Latihan 1 model.php ganjil 2026 #
