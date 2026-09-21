@@ -1,1 +1,1 @@
-# controller ganjil 2026 #
+# config ganjil 2026 #
