@@ -1,5 +1,5 @@
 <?php
-class login_m extends Model
+class Login_M extends Model
 {
     function ambildata($email, $pass)
     {
