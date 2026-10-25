@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Data Mobil</h1>
+            <h1 class="m-0">Starter Page</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -52,7 +52,53 @@
                                 <td><?= $m['nbagasi'] ?></td>
                                 <td><?= $m['jns_mobil'] . '<br>' . $m['transmisi'] ?></td>
                                 <td><?= $m['thn_buat'] ?></td>
-                                <td><?= $m['ft_depan'] . '<br>' . $m['ft_blkng'] . '<br>' . $m['ft_interior'] ?></td>
+                              
+<td>
+    <?php
+    $foto = [
+        $m['ft_depan'],
+        $m['ft_blkg'],
+        $m['ft_interior']
+    ];
+
+    // Lokasi folder img di dalam proyek
+    $folder = $_SERVER['DOCUMENT_ROOT'] . '/dpwl-nuriza072/img/';
+
+    foreach ($foto as $f) :
+        $namaFile = basename($f);
+        $fileFoto = '';
+
+        // Cek file dengan nama yang tersimpan di database
+        if (is_file($folder . $namaFile)) {
+            $fileFoto = $namaFile;
+        } else {
+            // Coba ekstensi gambar
+            foreach (['.jpg', '.jpeg', '.png'] as $ext) {
+                if (is_file($folder . $namaFile . $ext)) {
+                    $fileFoto = $namaFile . $ext;
+                    break;
+                }
+            }
+        }
+    ?>
+
+        <?php if ($fileFoto != '') : ?>
+            <img
+                src="<?= base_url('img/' . rawurlencode($fileFoto)) ?>"
+                alt="Foto Mobil"
+                width="100"
+                height="70"
+                style="object-fit: cover; margin: 3px;"
+            >
+        <?php else : ?>
+            <span>Foto tidak ditemukan: <?= htmlspecialchars($namaFile) ?></span>
+        <?php endif; ?>
+
+        <br>
+
+    <?php endforeach; ?>
+</td>
+
                                 <td><?= $m['hrg_hari'] ?></td>
                                 <td><?= $m['cttn_unit'] ?></td>
                                 <td><?= $m['status_unit'] ?></td>
