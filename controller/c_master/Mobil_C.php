@@ -28,6 +28,17 @@ class Mobil_C extends Controller
 
     public function simpan()
     {
+        public function edit($no_plat)
+{
+    $info['nm_user'] = explode('@', $this->session->userdata('emailuser'))[0];
+    $mobil = $this->load->model('m_master/Mobil_M');
+    $dt['mobil'] = $mobil->detailmobil($no_plat);
+    $this->load->view('layout/header');
+    $this->load->view('layout/sidebar', $info);
+    $this->load->view('v_master/update_mobilview', $dt);
+    $this->load->view('layout/footer');
+}
+
         $mobil = $this->load->model('m_master/Mobil_M');
 
         // Mengambil nomor plat
