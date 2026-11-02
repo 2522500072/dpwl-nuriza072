@@ -1,19 +1,33 @@
-
 <?php
 class Mobil_M extends Model
 {
-    function datamobil()
-    {
-        $dtmobil = $this->db->prepare("SELECT no_plat, nm_mobil, nkursi, nbagasi, jns_mobil, transmisi,
-        thn_buat, ft_depan, ft_blkg, ft_interior, hrg_hari, cttn_unit, status_unit FROM mobil");
+function datamobil()
+{
+    $query = "SELECT no_plat, nm_mobil, nkursi, nbagasi,
+                     jns_mobil, transmisi, thn_buat,
+                     ft_depan, ft_blkng, ft_interior,
+                     hrg_hari, cttn_unit, status_unit
+              FROM mobil";
 
-        if (!$dtmobil) {
-            die("Query gagal: " . $this->db->error);
-        }
+    $dtmobil = $this->db->prepare($query);
 
-        $dtmobil->execute();
-        return $dtmobil->get_result()->fetch_all(MYSQLI_ASSOC);
+    // Periksa apakah query berhasil dipersiapkan
+    if ($dtmobil === false) {
+        die("Query datamobil gagal: " . $this->db->error);
     }
+
+    // Jalankan query
+    if (!$dtmobil->execute()) {
+        die("Eksekusi datamobil gagal: " . $dtmobil->error);
+    }
+
+    // Ambil seluruh data
+    $hasil = $dtmobil->get_result()->fetch_all(MYSQLI_ASSOC);
+
+    $dtmobil->close();
+
+    return $hasil;
+} 
     public function cekplat($no_plat)
 {
     $sql = $this->db->prepare("SELECT no_plat FROM mobil WHERE no_plat = ? ");
@@ -22,14 +36,25 @@ class Mobil_M extends Model
     $hasil = $sql->get_result();
     return $hasil->num_rows > 0;
 }
+
 public function simpan($data)
 {
+    $sql = $this->db->prepare("INSERT INTO mobil (no_plat,nm_mobil,nkursi,nbagasi,
+    jns_mobil,transmisi,thn_buat,ft_depan,ft_blkng,ft_interior,hrg_hari,cttn_unit,
+    status_unit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+    $sql->bind_param("ssiississsdss", $data['no_plat'], $data['nm_mobil'], $data['nkursi'], 
+    $data['nbagasi'], $data['jns_mobil'], $data['transmisi'], $data['thn_buat'], 
+    $data['ft_depan'], $data['ft_blkng'], $data['ft_interior'], $data['hrg_hari'], 
+    $data['cttn_unit'], $data['status_unit']);
+    return $sql->execute();
 }
-    public function detailmobil($no_plat)
+
+public function detailmobil($no_plat)
 {
     $sql = $this->db->prepare(
         "SELECT no_plat, nm_mobil, nkursi, nbagasi, jns_mobil,
-            transmisi, thn_buat, ft_depan, ft_blkg,
+            transmisi, thn_buat, ft_depan, ft_blkng,
             ft_interior, hrg_hari, cttn_unit, status_unit
         FROM mobil
         WHERE no_plat = ?"
@@ -40,9 +65,39 @@ public function simpan($data)
 
     return $sql->get_result()->fetch_assoc();
 }
+public function UbahDtMobil($data)
+{
+    $sql = $this->db->prepare(
+        "UPDATE mobil SET nm_mobil = ?, nkursi = ?, nbagasi = ?, jns_mobil = ?, 
+        transmisi = ?, thn_buat = ?, ft_depan = ?, ft_blkng = ?, ft_interior = ?, 
+        hrg_hari = ?, cttn_unit = ?, status_unit = ? WHERE no_plat = ?"
+    );
 
-    $sql = $this->db->prepare("INSERT INTO mobil (no_plat,nm_mobil,nkursi,nbagasi,jns_mobil,transmisi,thn_buat,ft_depan,ft_blkg,ft_interior,hrg_hari,cttn_unit,status_unit) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    
-    $sql->bind_param("ssiississsdss",$data['no_plat'],$data['nm_mobil'],$data['nkursi'],$data['nbagasi'],$data['jns_mobil'],$data['transmisi'],$data['thn_buat'],$data['ft_depan'],$data['ft_blkg'],$data['ft_interior'],$data['hrg_hari'],$data['cttn_unit'],$data['status_unit']);
+    $sql->bind_param(
+        "siississsdsss",
+        $data['nm_mobil'],
+        $data['nkursi'],
+        $data['nbagasi'],
+        $data['jns_mobil'],
+        $data['transmisi'],
+        $data['thn_buat'],
+        $data['ft_depan'],
+        $data['ft_blkng'],
+        $data['ft_interior'],
+        $data['hrg_hari'],
+        $data['cttn_unit'],
+        $data['status_unit'],
+        $data['no_plat']
+    );
+
     return $sql->execute();
+}
+public function HapusDtMobil($no_plat)
+{
+    $dtmobil = $this->db->prepare("DELETE FROM mobil WHERE no_plat = ?");
+    $dtmobil->bind_param("s", $no_plat);
+    $hasil = $dtmobil->execute();
+    $dtmobil->close();
+    return $hasil;
+}
 }
