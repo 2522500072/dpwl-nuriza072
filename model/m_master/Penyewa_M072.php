@@ -1,6 +1,6 @@
-```php
+
 <?php
-class Penyewa_M extends Model
+class Penyewa_M072 extends Model
 {
     // Menampilkan semua data penyewa
     public function datapenyewa()
@@ -118,4 +118,3 @@ class Penyewa_M extends Model
         return $hasil;
     }
 }
-```

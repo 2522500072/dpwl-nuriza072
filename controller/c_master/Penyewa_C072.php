@@ -1,10 +1,10 @@
-```php
+
 <?php
-class Penyewa_C extends Controller
+class Penyewa_C072 extends Controller
 {
     public function index()
     {
-        $cekdata = $this->load->model('m_master/Penyewa_M');
+        $cekdata = $this->load->model('m_master/Penyewa_M072');
         $dt['datapenyewa'] = $cekdata->datapenyewa();
 
         $this->load->view('layout/header');
@@ -25,7 +25,7 @@ class Penyewa_C extends Controller
 
     public function simpan()
     {
-        $penyewa = $this->load->model('m_master/Penyewa_M');
+        $penyewa = $this->load->model('m_master/Penyewa_M072');
 
         if ($penyewa->cekpenyewa($this->load->post('user_plg072'))) {
             echo "<script>
@@ -108,7 +108,7 @@ class Penyewa_C extends Controller
         if ($simpan) {
             echo "<script>
                 alert('Data penyewa berhasil disimpan!');
-                window.location.href = '" . base_url('Penyewa_C/index') . "';
+                window.location.href = '" . base_url('Penyewa_C072/index') . "';
             </script>";
         } else {
             echo "<script>
@@ -122,7 +122,7 @@ class Penyewa_C extends Controller
     {
         $info['nm_user'] = explode('@', $this->session->userdata('emailuser'))[0];
 
-        $penyewa = $this->load->model('m_master/Penyewa_M');
+        $penyewa = $this->load->model('m_master/Penyewa_M072');
         $dt['penyewa'] = $penyewa->detailpenyewa($user_plg072);
 
         $this->load->view('layout/header');
@@ -133,7 +133,7 @@ class Penyewa_C extends Controller
 
     public function UpdatePenyewa()
     {
-        $penyewa = $this->load->model('m_master/Penyewa_M');
+        $penyewa = $this->load->model('m_master/Penyewa_M072');
 
         $user_plg072 = $this->load->post('user_plg072');
 
@@ -227,7 +227,7 @@ class Penyewa_C extends Controller
         if ($simpan) {
             echo "<script>
                 alert('Data penyewa berhasil diubah!');
-                window.location.href = '" . base_url('Penyewa_C/index') . "';
+                window.location.href = '" . base_url('Penyewa_C072/index') . "';
             </script>";
         } else {
             echo "<script>
@@ -239,14 +239,14 @@ class Penyewa_C extends Controller
 
     public function hapus($user_plg072)
     {
-        $penyewa = $this->load->model('m_master/Penyewa_M');
+        $penyewa = $this->load->model('m_master/Penyewa_M072');
 
         $dt['Gambar_Penyewa'] = $penyewa->detailpenyewa($user_plg072);
 
         if (!$dt['Gambar_Penyewa']) {
             echo "<script>
                 alert('Data penyewa tidak ditemukan!');
-                window.location.href = '" . base_url('Penyewa_C/index') . "';
+                window.location.href = '" . base_url('Penyewa_C072/index') . "';
             </script>";
             exit;
         }
@@ -268,7 +268,7 @@ class Penyewa_C extends Controller
 
             echo "<script>
                 alert('Data penyewa berhasil dihapus!');
-                window.location.href = '" . base_url('Penyewa_C/index') . "';
+                window.location.href = '" . base_url('Penyewa_C072/index') . "';
             </script>";
         } else {
             echo "<script>
@@ -286,4 +286,3 @@ class Penyewa_C extends Controller
         exit;
     }
 }
-```
