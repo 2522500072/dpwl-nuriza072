@@ -1,33 +1,13 @@
 <?php
 class Mobil_M extends Model
 {
-function datamobil()
-{
-    $query = "SELECT no_plat, nm_mobil, nkursi, nbagasi,
-                     jns_mobil, transmisi, thn_buat,
-                     ft_depan, ft_blkng, ft_interior,
-                     hrg_hari, cttn_unit, status_unit
-              FROM mobil";
-
-    $dtmobil = $this->db->prepare($query);
-
-    // Periksa apakah query berhasil dipersiapkan
-    if ($dtmobil === false) {
-        die("Query datamobil gagal: " . $this->db->error);
-    }
-
-    // Jalankan query
-    if (!$dtmobil->execute()) {
-        die("Eksekusi datamobil gagal: " . $dtmobil->error);
-    }
-
-    // Ambil seluruh data
-    $hasil = $dtmobil->get_result()->fetch_all(MYSQLI_ASSOC);
-
-    $dtmobil->close();
-
-    return $hasil;
-} 
+    function datamobil()
+    {
+        $dtmobil = $this->db->prepare("SELECT no_plat, nm_mobil, nkursi, nbagasi, jns_mobil, transmisi,
+        thn_buat, ft_depan, ft_blkng, ft_interior, hrg_hari, cttn_unit, status_unit FROM mobil");
+        $dtmobil->execute();
+        return $dtmobil->get_result()->fetch_all(MYSQLI_ASSOC);
+    }   
     public function cekplat($no_plat)
 {
     $sql = $this->db->prepare("SELECT no_plat FROM mobil WHERE no_plat = ? ");
